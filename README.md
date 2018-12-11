@@ -1,11 +1,11 @@
 # 服务端与客户端各有四个类 #
-服务端： 
+服务端：<br> 
   AioTcpServer---服务器主类。它与客户端通信由回调连接处理器AioAcceptHandler完成。 <br>
   AioAcceptHandler-----连接处理器。处理服务器与客户端的通信。具体的读操作，回调AioReadHandler处理器 <br>
   AioReadHandler-----读处理器。处理连接处理器交给的 读任务。即具体的读客户端的信息由它完成。如果服务器要回应该客户端，需要回调AioWriteHandler写处理器。 <br>
   AioWriteHandler----写处理器。完成读处理器交给的任务，即向客户端回应消息。 <br>
 
-客户端： 
+客户端： <br>
    AioTcpClient-------客户端主类。它与服务器的通讯由回调AioConnectHandler连接处理器完成。具体写信息由客户端socket回调AioSendHandler完成。具体读信息由客户端socket回调AioReadHandler完成。 <br>
    AioConnectHandler-------连接处理器。完成与服务器的通讯。具体的读信息由客户端socket回调读处理器AioReadHandler完成，即完成读取服务器的信息。 <br>
    AioReadHandler-------读处理器，完成读取服务端信息。 <br>
