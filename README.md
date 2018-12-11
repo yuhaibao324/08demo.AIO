@@ -23,41 +23,41 @@
       但是传给该方法的CompletionHandler的处理器的A、V参数 却是不相同的，不仅是值不同，类型也有可能完全不同。
 
 # 代码说明 和 程序解说 #
-1.解码：
+# 1.解码：
   
-  attachment.flip();
-  CharsetDecoder decoder = Charset.forName("UTF-8").newDecoder();
-  decoder.onMalformedInput(CodingErrorAction.IGNORE); // 注意
-  content = decoder.decode(attachment).toString();
-  attachment.compact();
+      attachment.flip();
+      CharsetDecoder decoder = Charset.forName("UTF-8").newDecoder();
+      decoder.onMalformedInput(CodingErrorAction.IGNORE); // 注意
+      content = decoder.decode(attachment).toString();
+      attachment.compact();
+      
+# 2.客户端连接：
   
-  2.客户端连接：
-  
-  socket.connect(new InetSocketAddress("localhost", 8888), socket, new ConnectHandler());
-  这里注意加上IP，不然连接打不开。
-  
-  下面贴上我自己的代码：
-  
-  Server:
+      socket.connect(new InetSocketAddress("localhost", 8888), socket, new ConnectHandler());
+      这里注意加上IP，不然连接打不开。
+      
+      下面贴上我自己的代码：
+      
+      Server:
   
  
-  package com.demo.aio;
-   
-  import java.io.IOException;
-  import java.net.InetSocketAddress;
-  import java.nio.ByteBuffer;
-  import java.nio.channels.AsynchronousChannelGroup;
-  import java.nio.channels.AsynchronousServerSocketChannel;
-  import java.nio.channels.AsynchronousSocketChannel;
-  import java.nio.channels.CompletionHandler;
-  import java.nio.charset.CharacterCodingException;
-  import java.nio.charset.Charset;
-  import java.nio.charset.CharsetDecoder;
-  import java.nio.charset.CodingErrorAction;
-  import java.util.concurrent.ExecutorService;
-  import java.util.concurrent.Executors;
-   
-  public class Server {
+      package com.demo.aio;
+       
+      import java.io.IOException;
+      import java.net.InetSocketAddress;
+      import java.nio.ByteBuffer;
+      import java.nio.channels.AsynchronousChannelGroup;
+      import java.nio.channels.AsynchronousServerSocketChannel;
+      import java.nio.channels.AsynchronousSocketChannel;
+      import java.nio.channels.CompletionHandler;
+      import java.nio.charset.CharacterCodingException;
+      import java.nio.charset.Charset;
+      import java.nio.charset.CharsetDecoder;
+      import java.nio.charset.CodingErrorAction;
+      import java.util.concurrent.ExecutorService;
+      import java.util.concurrent.Executors;
+       
+      public class Server {
    
       public void server() throws IOException {
           ExecutorService executor = Executors.newFixedThreadPool(20);
@@ -96,23 +96,23 @@
                   try {
                       attachment.flip();
                       CharsetDecoder decoder = Charset.forName("UTF-8").newDecoder();
-  //                  decoder.onMalformedInput(CodingErrorAction.IGNORE);
-                      content = decoder.decode(attachment).toString();
-                      attachment.compact();
-                      System.out.println("收到客户端消息：" + content);
-                  } catch (CharacterCodingException e) {
-                      e.printStackTrace();
+      //                  decoder.onMalformedInput(CodingErrorAction.IGNORE);
+                          content = decoder.decode(attachment).toString();
+                          attachment.compact();
+                          System.out.println("收到客户端消息：" + content);
+                      } catch (CharacterCodingException e) {
+                          e.printStackTrace();
+                      }
+                      socket.read(attachment, attachment, this);
+                      ByteBuffer client = ByteBuffer.wrap(("服务器回复消息：" + content).getBytes());
+                      socket.write(client, client, new WriterHandler(socket));
+                  } else if(result == 0) {
+                      System.out.println("空消息");
+                  } else {
+                      attachment = null;
+                      System.out.println("断开");
                   }
-                  socket.read(attachment, attachment, this);
-                  ByteBuffer client = ByteBuffer.wrap(("服务器回复消息：" + content).getBytes());
-                  socket.write(client, client, new WriterHandler(socket));
-              } else if(result == 0) {
-                  System.out.println("空消息");
-              } else {
-                  attachment = null;
-                  System.out.println("断开");
               }
-          }
    
           @Override
           public void failed(Throwable exc, ByteBuffer attachment) {
@@ -151,27 +151,27 @@
           Thread.sleep(Integer.MAX_VALUE);
       }
        
-  }
-  Client:
-  
-  
-  package com.demo.aio;
-   
-  import java.io.IOException;
-  import java.io.UnsupportedEncodingException;
-  import java.net.InetSocketAddress;
-  import java.net.StandardSocketOptions;
-  import java.nio.ByteBuffer;
-  import java.nio.channels.AsynchronousChannelGroup;
-  import java.nio.channels.AsynchronousSocketChannel;
-  import java.nio.channels.CompletionHandler;
-  import java.nio.charset.CharacterCodingException;
-  import java.nio.charset.Charset;
-  import java.util.Scanner;
-  import java.util.concurrent.ExecutorService;
-  import java.util.concurrent.Executors;
-   
-  public class Client {
+      }
+      Client:
+      
+      
+      package com.demo.aio;
+       
+      import java.io.IOException;
+      import java.io.UnsupportedEncodingException;
+      import java.net.InetSocketAddress;
+      import java.net.StandardSocketOptions;
+      import java.nio.ByteBuffer;
+      import java.nio.channels.AsynchronousChannelGroup;
+      import java.nio.channels.AsynchronousSocketChannel;
+      import java.nio.channels.CompletionHandler;
+      import java.nio.charset.CharacterCodingException;
+      import java.nio.charset.Charset;
+      import java.util.Scanner;
+      import java.util.concurrent.ExecutorService;
+      import java.util.concurrent.Executors;
+       
+      public class Client {
    
       private AsynchronousSocketChannel socket = null;
        
@@ -273,4 +273,4 @@
           client.send();
       }
        
-  }
+      }
