@@ -13,11 +13,11 @@
    
    
 # 异步socket编程，一样分成客户端与服务端 #
-      AsynchronousServerSocketChannel  -------服务端socket; <br>
-      AsynchronousSocketChannel------客户端socket. <br>
-      AsynchronousChannelGroup-----socket管理器。服务端socket与客户端socket都由它生成。它的管理需要线程池。它的工作方式之一是把必要的资源交给客户端与服务端的处理器，并调用该处理器进行工作。 <br>
+      AsynchronousServerSocketChannel  -------服务端socket; 
+      AsynchronousSocketChannel------客户端socket. 
+      AsynchronousChannelGroup-----socket管理器。服务端socket与客户端socket都由它生成。它的管理需要线程池。它的工作方式之一是把必要的资源交给客户端与服务端的处理器，并调用该处理器进行工作。 
       ExecutorService-----线程池。是socket管理器需要的东西。 
-      CompletionHandler-------处理器。它有两个泛型参数A、V。这是个回调函数所用的标准接口。<br>
-      Socket管理器 会把相关实参放到这个A,V的参数中，让用户处理后，然后调用这个处理器的方法进行执行。<br>
-      如果用户有一个方法中的参数的类型是该处理器，那么在其他地方再次调用这个方法，尽管方法不同，<br>
-      但是传给该方法的CompletionHandler的处理器的A、V参数 却是不相同的，不仅是值不同，类型也有可能完全不同。<br>
+      CompletionHandler-------处理器。它有两个泛型参数A、V。这是个回调函数所用的标准接口。
+      Socket管理器 会把相关实参放到这个A,V的参数中，让用户处理后，然后调用这个处理器的方法进行执行。
+      如果用户有一个方法中的参数的类型是该处理器，那么在其他地方再次调用这个方法，尽管方法不同，
+      但是传给该方法的CompletionHandler的处理器的A、V参数 却是不相同的，不仅是值不同，类型也有可能完全不同。
