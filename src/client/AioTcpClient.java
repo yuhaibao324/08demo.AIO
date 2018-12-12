@@ -83,7 +83,10 @@ public class AioTcpClient {
     
     public void work() throws Exception{
         AioTcpClient client = new AioTcpClient();
-        client.start("localhost", 9008);
+        client.start("192.168.1.100", 8080);
+        System.out.println("192.168.1.100: First-connectting");
+        //  client.start("xxxx.iask.in", 18495);
+        //  System.out.println("192.168.1.100: Second-connectting");
     }
 
     public void send() throws UnsupportedEncodingException{

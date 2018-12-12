@@ -57,8 +57,8 @@ public class AioTcpServer implements Runnable {
     } 
  
     public static void main(String... args) throws Exception { 
-        AioTcpServer server = new AioTcpServer(9008);
-        System.out.println("AioTcpServer Listen Port: 9008");
+        AioTcpServer server = new AioTcpServer(8080);
+        System.out.println("AioTcpServer Listen Port: 8080");
         new Thread(server).start(); 
     } 
 }
